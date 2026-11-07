@@ -68,7 +68,16 @@ Full roadmap and known limitations: [docs/04_progress_and_roadmap.md](docs/04_pr
 
 ## Quick start
 
-Full instructions: [docs/07_setup_guide.md](docs/07_setup_guide.md). Short version, once the tools are installed:
+Full instructions: [docs/07_setup_guide.md](docs/07_setup_guide.md).
+
+**Quickest:** install Git, Python 3.12, Node 20+ and Docker Desktop, then from the repository root:
+
+| | Windows (PowerShell) | macOS / Linux |
+|---|---|---|
+| Once | `powershell -ExecutionPolicy Bypass -File scripts\setup.ps1` | `bash scripts/setup.sh` |
+| Every day | `powershell -ExecutionPolicy Bypass -File scripts\start.ps1` | `bash scripts/start.sh` |
+
+Or by hand, once the tools are installed:
 
 ```bash
 # backend — first time: python -m venv .venv, activate it, pip install -r requirements.txt, copy .env.example to .env and fill the two keys
