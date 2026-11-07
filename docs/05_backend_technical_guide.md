@@ -1,6 +1,6 @@
 # Backend guide — how it works and why
 
-For developers joining the project. Read this once, top to bottom (about 20 minutes), then keep it open while reading the code. For the database tables see `02_database.md` and `database_guide.pdf` in this folder; for running things see `backend/README.md`.
+For developers joining the project. Read this once, top to bottom (about 20 minutes), then keep it open while reading the code. For the database tables see `02_database.md` and `database_guide.pdf` in this folder; for running things see `07_setup_guide.md`.
 
 ---
 
@@ -34,7 +34,7 @@ backend/
 │   ├── main.py              builds the FastAPI app: middleware, routers, error handlers
 │   ├── config.py            all settings, read from .env; refuses to start if secrets are missing
 │   ├── api/v1/              one file per feature area = the HTTP endpoints
-│   │   ├── auth.py          register, login, refresh, logout, me
+│   │   ├── auth.py          register, login, refresh, logout, me (+ PATCH me: theme preference)
 │   │   ├── workspaces.py    workspace settings, members, usage
 │   │   ├── brands.py        brands + logo upload
 │   │   ├── posts.py         the big one: CRUD, approval, scheduling, publishing, retry
@@ -60,7 +60,7 @@ backend/
 │   └── workers/
 │       ├── celery_app.py    Celery config + the Beat schedule
 │       └── tasks/           publish.py, token_refresh.py, cleanup.py
-├── alembic/versions/        database migrations (0001 creates everything, 0002 adds one column)
+├── alembic/versions/        database migrations (0001 creates everything; 0002 and 0003 each add one column)
 ├── seeds/                   demo data + the 16 Smart Templates
 └── tests/                   unit tests + database-backed integration tests
 ```
@@ -266,7 +266,7 @@ Never change `FERNET_KEY` once social accounts exist — their stored tokens bec
 ## 12. Tests
 
 ```
-python -m pytest                       # everything (59 tests)
+python -m pytest                       # everything (66 tests; on Windows run the two groups below separately)
 python -m pytest -m "not integration"  # fast unit tests only
 ```
 
@@ -284,7 +284,7 @@ The integration fixture refuses to run against any database whose name doesn't e
 3. **Audit** — call `record_audit_event(...)` for any create/update/delete/publish-type action. Add a `UsageLog` row for billable things.
 4. **Never** return tokens, encrypted fields or raw provider responses.
 5. **Tests** — happy path, a user from another workspace (expect 404), a wrong role (expect 403), a wrong status (expect 400/409).
-6. **Frontend types** — regenerate the web app's API types from `/openapi.json` so TypeScript knows the new shape.
+6. **Frontend types** — run `npm run gen:api` in `frontend/` so TypeScript knows the new shape.
 
 Model changes: edit `models/`, run `alembic revision --autogenerate -m "…"`, read the generated file, then `alembic upgrade head`. Enum values are stored lower-case (`'draft'`, not `'DRAFT'`).
 

@@ -18,6 +18,9 @@ backend/uploads/
 # Celery Beat's local schedule state (recreated on every start)
 celerybeat-schedule*
 
+# Node (future frontend)
+node_modules/
+dist/
 
 # IDE / OS
 .vscode/

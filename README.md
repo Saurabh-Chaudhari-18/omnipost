@@ -2,77 +2,85 @@
 
 B2B social media marketing platform — one workspace where a business or agency manages its brands, creates content, runs approvals, and publishes to Facebook, Instagram and LinkedIn.
 
-This repository currently contains the **backend**. The web app (frontend) will be added once it is ready for review.
-
 | Folder | What's inside |
 |---|---|
 | [`backend/`](backend/) | FastAPI · PostgreSQL 16 · Celery/Redis · S3-compatible storage — API, database migrations, background workers, tests |
-| [`docs/`](docs/) | Project documentation: approach, database, backend functionality, progress and roadmap |
+| [`frontend/`](frontend/) | React 19 · TypeScript · Vite · Tailwind CSS 4 · shadcn/ui — the web app, in the product owner's design (dark by default) |
+| [`docs/`](docs/) | Project documentation: approach, database, functionality, progress and roadmap, system design, **developer setup** |
 
-**Full documentation:** [docs/README.md](docs/README.md) · **Run the backend locally:** [backend/README.md](backend/README.md)
+**New developer? Start here:** [docs/07_setup_guide.md](docs/07_setup_guide.md) — install, configure and run everything on your laptop, step by step.
+
+**All documentation:** [docs/README.md](docs/README.md)
 
 ---
 
-## Project status — 5 November 2026
+## Project status — 7 November 2026
 
 | Area | Status |
 |---|---|
 | Backend (Phase 1) | ✅ Done |
-| Database (13 tables) | ✅ Done |
-| Automated tests (59) | ✅ Written — 52 unit tests pass; 7 database tests run when PostgreSQL is up |
-| Web app (frontend) | 🟡 In progress |
-| Real Facebook / Instagram publishing check | 🟡 Waiting on Meta developer app access |
-| Hosted review environment | ⏳ Not started |
+| Database (13 tables, migrations 0001–0004) | ✅ Done |
+| Automated backend tests (66) | ✅ Passing |
+| Web app (Phase 1 screens) | ✅ Done, in the owner's design |
+| Full journey in the browser (write → approve → publish to test accounts) | ✅ Verified |
+| Live Facebook / Instagram publishing | 🟡 Waiting on the client's Meta developer app |
+| LinkedIn connect flow | 🟡 Depends on LinkedIn developer app approval |
+| Hosted review environment | ⏳ Planned |
 | AI content generation | ⏳ Phase 2 |
 
 ---
 
 ## ✅ Done so far
 
-**Backend — complete for Phase 1**
+**Web app**
 
-- **Sign-in and sessions** — register, login, logout, secure auto-refresh of the session, rate limiting on login.
-- **Workspaces and team** — workspaces with owner / admin / member roles, add members, workspace settings, usage summary.
-- **Brands** — brand profiles (industry, audience, tone of voice, language, guidelines) and logo upload.
-- **Smart Templates** — 16 ready-made post templates with placeholders, suggested hashtags and call-to-action (the Phase 1 stand-in for AI).
-- **Posts** — caption, hashtags, call-to-action, separate wording per platform, pre-publish validation with character limits and preview text.
-- **Media** — image and video upload with file-type checks, size limits, removal of hidden location data, and carousel ordering.
-- **Approval workflow** — submit, approve, reject with reason, withdraw; posts are locked while under review; every approval is tied to a fingerprint of the exact content, so nothing can change after approval without going back to draft.
-- **Scheduling and publishing** — schedule or publish now to several accounts at once, per-account status, automatic retry of temporary failures, safe manual retry, protection against duplicate posts, content calendar.
-- **Social accounts** — connect Facebook pages and Instagram business accounts through Meta login; mock accounts for demos and testing; warnings before access expires.
-- **Security and records** — strict separation between customers' workspaces, encrypted social media credentials, full audit trail of every action, usage logging for future billing.
-- **Database** — 13-table PostgreSQL schema with versioned migrations and built-in safety rules.
-- **Testing** — 59 automated tests, including end-to-end tests of the full create → approve → schedule → publish journey.
-- **Demo data** — one command sets up a demo agency with brands, accounts and posts in every stage.
+- **Sign-in and session** — register, sign in, stays signed in across reloads; light / dark / match-device theme saved to the account (dark by default).
+- **Navigation** — icon rail with brand switcher on desktop, bottom bar on phones.
+- **Home** — counts, what needs attention, what's coming up, account health, brands, recently published.
+- **Post Studio** — write once or per platform, Smart Templates with fill-in blanks, hashtags, call to action, photos and videos (upload, reorder, remove), live Instagram / Facebook / LinkedIn previews with character-limit rings, pre-publish checks per account.
+- **Approval** — send for approval (the content is sealed with a fingerprint), approve, request changes, withdraw; approval record with the seal; printable **approval certificate**.
+- **Publishing** — post now or schedule, live status per account, try again for failures.
+- **Calendar**, **Smart Templates**, **Connected accounts** (health, expiry warnings, test accounts, Facebook connect), **Brands**, **Settings** (team, self-approval rule, 30-day usage).
 
-Details: [docs/03_backend_functionality.md](docs/03_backend_functionality.md) · [docs/02_database.md](docs/02_database.md)
+**Backend**
+
+- Authentication with rotating refresh tokens, workspaces and roles, brands, posts with per-platform wording, media with file checks and location-data removal, hash-bound approval, background publishing that never posts twice, audit trail, usage logging, per-user preferences.
+
+Details: [docs/03_backend_functionality.md](docs/03_backend_functionality.md) · [docs/02_database.md](docs/02_database.md) · [frontend/README.md](frontend/README.md)
 
 ---
 
 ## 🟡 In progress
 
-- **Web app (React + TypeScript).** Screens built so far: login and registration, brands, Smart Templates, posts list, Post Studio (create and edit), approval panel, publish panel with status and retry, content calendar, connected accounts and settings. Next: finishing the remaining screens, connecting every flow end to end, mobile layout and polish.
-- **Real publishing check.** Proving live Facebook and Instagram publishing with a Meta developer app and a test Page / Instagram business account (needs the client's Meta Business access).
-- **LinkedIn decision.** The LinkedIn publishing code is built for text posts; the connect flow (about 1.5 days) will be added if the client's LinkedIn developer app is approved. Until then LinkedIn works in demo mode only.
-
----
+- **Real publishing check** with a Meta developer app and a test Page / Instagram business account (needs the client's Meta Business access).
+- **LinkedIn** connect flow if the client's LinkedIn developer app is approved; until then LinkedIn works with test accounts only.
+- **Polish and testing:** automated browser tests for the main journey, accessibility and phone-layout passes.
 
 ## 🔭 Future plan
 
-**Finish Phase 1 (MVP)**
+**Finish Phase 1:** hosted review environment (Railway or Render + Cloudflare R2), end-to-end test pass there, demo script, known-limitations document, sign-off.
 
-- Hosted review environment (recommended: Railway or Render + Cloudflare R2 for media) so stakeholders can try the full journey themselves.
-- End-to-end test pass on the hosted environment, demo script, and a known-limitations document.
-- MVP review and sign-off.
+**Phase 2 and later:** AI captions, hashtags and images (always through the approval workflow), Instagram carousels / Reels / Stories, team administration, multi-level approvals, analytics, billing, production hardening.
 
-**Phase 2 and later**
+Full roadmap and known limitations: [docs/04_progress_and_roadmap.md](docs/04_progress_and_roadmap.md) · System design: [docs/06_system_design.md](docs/06_system_design.md)
 
-- **AI content** — generate captions, hashtags, calls-to-action and post ideas from the brand profile; AI image generation; usage credits. AI output always goes through the same approval workflow.
-- **Richer publishing** — Instagram carousels, Reels and Stories; LinkedIn images; video.
-- **Team administration** — email invitations, remove members, change roles, password reset, profile editing.
-- **Workflow** — multi-level approvals, bulk scheduling, comments on posts.
-- **Insights** — post performance and calendar analytics.
-- **Billing** — plans and credits built on the existing usage log.
-- **Production readiness** — backups, monitoring and alerting, load testing, hardened infrastructure.
+---
 
-Full roadmap and known limitations: [docs/04_progress_and_roadmap.md](docs/04_progress_and_roadmap.md)
+## Quick start
+
+Full instructions: [docs/07_setup_guide.md](docs/07_setup_guide.md). Short version, once the tools are installed:
+
+```bash
+# backend — first time: python -m venv .venv, activate it, pip install -r requirements.txt, copy .env.example to .env and fill the two keys
+docker compose up -d postgres redis
+python -m alembic upgrade head
+python -m seeds.seed
+python -m uvicorn app.main:app --reload --port 8000                              # Terminal 1
+python -m celery -A app.workers.celery_app worker --loglevel=info --pool=solo    # Terminal 2 (drop --pool=solo on macOS/Linux)
+python -m celery -A app.workers.celery_app beat --loglevel=info                  # Terminal 3
+
+# frontend — first time: npm ci
+npm run dev                                                                      # Terminal 4
+```
+
+Open http://localhost:5173 and sign in with the demo account `demo@example.com` / `DemoPassword123!` (local development only).
