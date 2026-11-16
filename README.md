@@ -70,7 +70,17 @@ Full roadmap and known limitations: [docs/04_progress_and_roadmap.md](docs/04_pr
 
 Full instructions: [docs/07_setup_guide.md](docs/07_setup_guide.md).
 
-**Quickest:** install Git, Python 3.12, Node 20+ and Docker Desktop, then from the repository root:
+**Easiest: only Docker Desktop needed.** Open Docker Desktop and wait for *Engine running*, then:
+
+| Windows | macOS / Linux |
+|---|---|
+| Double-click `start-docker.cmd` in the repository root | `bash scripts/docker-up.sh` |
+
+This builds everything, sets up the database with demo data, starts the backend (API, worker, scheduler) and the web app, and serves it at **http://localhost:4173**. The first run takes a few minutes. After that, Docker Desktop shows one project, **omnipost**: its ▶ and ■ buttons start and stop the whole app (your data is kept). After pulling new code, run `start-docker.cmd` again to rebuild.
+
+Demo sign-in (local only): `demo@example.com` / `DemoPassword123!` (owner), `reviewer@example.com` / `DemoPassword123!` (approver), `staff@example.com` / `DemoPassword123!` (staff console at `/admin`).
+
+**For development** (code changes show instantly, web app on http://localhost:5173): install Git, Python 3.12, Node 20+ and Docker Desktop, then from the repository root:
 
 | | Windows (PowerShell) | macOS / Linux |
 |---|---|---|
