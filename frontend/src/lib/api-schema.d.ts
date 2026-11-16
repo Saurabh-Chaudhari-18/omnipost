@@ -78,6 +78,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/set-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set Password
+         * @description Redeem a one-time link from the admin panel: a new login chooses its
+         *     password, or an existing one replaces a forgotten password. The link is
+         *     the proof of identity, so every failure gets the same answer.
+         */
+        post: operations["set_password_api_v1_auth_set_password_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/refresh": {
         parameters: {
             query?: never;
@@ -183,6 +205,27 @@ export interface paths {
          *     system. ai_generation is reserved and always 0 in Phase 1.
          */
         get: operations["usage_summary_api_v1_workspaces__workspace_id__usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/features": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Workspace Features
+         * @description What this workspace's plan allows, for the web app to hide or lock
+         *     what is not included. Display only — every route enforces it itself.
+         */
+        get: operations["workspace_features_api_v1_workspaces__workspace_id__features_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -334,7 +377,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Submit For Approval */
+        /**
+         * Submit For Approval
+         * @description Send a draft for review. Optionally ask a specific manager or saved
+         *     client contact (D2); a contact gets a no-login link, returned ONCE.
+         */
         post: operations["submit_for_approval_api_v1_posts__post_id__submit_post"];
         delete?: never;
         options?: never;
@@ -510,6 +557,272 @@ export interface paths {
         get: operations["list_jobs_api_v1_posts__post_id__jobs_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/{post_id}/approvers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Approvers
+         * @description Who can be asked to review this post (D2), and who reviewed it last (D11).
+         */
+        get: operations["list_approvers_api_v1_posts__post_id__approvers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/{post_id}/assignee": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Reassign
+         * @description Change who is asked to review a pending post. Writes a `reassigned`
+         *     history row; earlier rows are never rewritten.
+         */
+        patch: operations["reassign_api_v1_posts__post_id__assignee_patch"];
+        trace?: never;
+    };
+    "/api/v1/brands/{brand_id}/contacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Contacts */
+        get: operations["list_contacts_api_v1_brands__brand_id__contacts_get"];
+        put?: never;
+        /** Create Contact */
+        post: operations["create_contact_api_v1_brands__brand_id__contacts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/brands/{brand_id}/contacts/{contact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove Contact
+         * @description Remove a contact: their open links stop working and their pending
+         *     posts move to "any manager" (D12). The name stays in history.
+         */
+        delete: operations["remove_contact_api_v1_brands__brand_id__contacts__contact_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Contact */
+        patch: operations["update_contact_api_v1_brands__brand_id__contacts__contact_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/approval-link-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Link Options
+         * @description The lifetimes this caller may pick in the Share dialog (D5).
+         */
+        get: operations["link_options_api_v1_workspaces__workspace_id__approval_link_options_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/{post_id}/approval-links": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Links */
+        get: operations["list_links_api_v1_posts__post_id__approval_links_get"];
+        put?: never;
+        /**
+         * Share With Client
+         * @description Create a link for a pending post. The URL is in this response ONLY.
+         */
+        post: operations["share_with_client_api_v1_posts__post_id__approval_links_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/approval-links/{link_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Revoke Link */
+        delete: operations["revoke_link_api_v1_approval_links__link_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/approval-links/{link_id}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend Link
+         * @description A fresh link to the same recipient, same lifetime, for an expired or
+         *     revoked one — only while the post is still pending with the same content.
+         */
+        post: operations["resend_link_api_v1_approval_links__link_id__resend_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Notifications */
+        get: operations["list_notifications_api_v1_workspaces__workspace_id__notifications_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/notifications/unread-count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Unread Count */
+        get: operations["unread_count_api_v1_workspaces__workspace_id__notifications_unread_count_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/notifications/{notification_id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark Read */
+        post: operations["mark_read_api_v1_workspaces__workspace_id__notifications__notification_id__read_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/notifications/read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark All Read */
+        post: operations["mark_all_read_api_v1_workspaces__workspace_id__notifications_read_all_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/approval/view": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** View */
+        post: operations["view_api_v1_public_approval_view_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/approval/decide": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decide
+         * @description Approve or request changes. First decision wins (D9); the deadline is
+         *     checked here, on the server's clock, at the moment of deciding (D5).
+         */
+        post: operations["decide_api_v1_public_approval_decide_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -757,6 +1070,655 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Overview */
+        get: operations["overview_api_v1_admin_overview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Workspaces */
+        get: operations["list_workspaces_api_v1_admin_workspaces_get"];
+        put?: never;
+        /**
+         * Create Workspace
+         * @description A new workspace owned by an existing login. To create the login too,
+         *     use POST /admin/users with `new_workspace_name`.
+         */
+        post: operations["create_workspace_api_v1_admin_workspaces_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Workspace */
+        get: operations["get_workspace_api_v1_admin_workspaces__workspace_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Workspace
+         * @description Rename a workspace or move it to another plan. A plan change applies
+         *     to the customer's next request.
+         */
+        patch: operations["update_workspace_api_v1_admin_workspaces__workspace_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/suspend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Suspend Workspace
+         * @description Make a workspace read-only: its members can still sign in and look,
+         *     nothing can be created, changed or published — queued posts fail
+         *     instead of going out. Nothing is deleted.
+         */
+        post: operations["suspend_workspace_api_v1_admin_workspaces__workspace_id__suspend_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/reactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reactivate Workspace */
+        post: operations["reactivate_workspace_api_v1_admin_workspaces__workspace_id__reactivate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/transfer-ownership": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Transfer Ownership
+         * @description Make another member the owner. The previous owner stays, as an admin.
+         */
+        post: operations["transfer_ownership_api_v1_admin_workspaces__workspace_id__transfer_ownership_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Members */
+        get: operations["list_members_api_v1_admin_workspaces__workspace_id__members_get"];
+        put?: never;
+        /**
+         * Add Member
+         * @description Add an existing login to a workspace, within the plan's member limit
+         *     (raise the limit with a feature override first if needed). The
+         *     customer's own approval setting is left as it is.
+         */
+        post: operations["add_member_api_v1_admin_workspaces__workspace_id__members_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/members/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove Member
+         * @description Remove a member. Their posts stay in the workspace.
+         */
+        delete: operations["remove_member_api_v1_admin_workspaces__workspace_id__members__user_id__delete"];
+        options?: never;
+        head?: never;
+        /** Change Member Role */
+        patch: operations["change_member_role_api_v1_admin_workspaces__workspace_id__members__user_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/features": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Workspace Features */
+        get: operations["workspace_features_api_v1_admin_workspaces__workspace_id__features_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/features/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Feature Override
+         * @description Give this one customer something different from their plan: a feature
+         *     on or off, or their own limit (null = unlimited). `expires_at` makes it
+         *     a trial that ends by itself. Applies to the customer's next request.
+         */
+        put: operations["set_feature_override_api_v1_admin_workspaces__workspace_id__features__key__put"];
+        post?: never;
+        /**
+         * Remove Feature Override
+         * @description Back to the plan default for this feature.
+         */
+        delete: operations["remove_feature_override_api_v1_admin_workspaces__workspace_id__features__key__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Users */
+        get: operations["list_users_api_v1_admin_users_get"];
+        put?: never;
+        /**
+         * Create User
+         * @description Create a login and return its one-time setup link. Optionally put it
+         *     in an existing workspace (`workspace_id` + `role`) or give it a new
+         *     workspace of its own (`new_workspace_name`).
+         */
+        post: operations["create_user_api_v1_admin_users_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get User */
+        get: operations["get_user_api_v1_admin_users__user_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User
+         * @description Rename a login, or deactivate / reactivate it. A deactivated login is
+         *     refused on its very next request and all its sessions are ended.
+         */
+        patch: operations["update_user_api_v1_admin_users__user_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/setup-link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * New Setup Link
+         * @description A fresh one-time "set your password" link — for a login that never
+         *     finished setup, or one that forgot its password. Any earlier unused
+         *     link stops working.
+         */
+        post: operations["new_setup_link_api_v1_admin_users__user_id__setup_link_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/force-logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Force Logout
+         * @description End every session of a login. Each device is signed out when its
+         *     current access token runs out (within ACCESS_TOKEN_EXPIRE_MINUTES); to
+         *     cut access off at once, deactivate the login instead.
+         */
+        post: operations["force_logout_api_v1_admin_users__user_id__force_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/platform-role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Platform Role
+         * @description Make a login platform staff, or an ordinary customer login again.
+         *     You cannot change your own role, so there is always one super admin
+         *     left; the first one is created from the command line.
+         */
+        put: operations["set_platform_role_api_v1_admin_users__user_id__platform_role_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plans */
+        get: operations["list_plans_api_v1_admin_plans_get"];
+        put?: never;
+        /**
+         * Create Plan
+         * @description A new plan. Every feature starts OFF unless `copy_from_key` names a
+         *     plan to copy the values from.
+         */
+        post: operations["create_plan_api_v1_admin_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Plan
+         * @description Rename, reorder or retire a plan. A retired plan keeps its current
+         *     workspaces but cannot be given to another one.
+         */
+        patch: operations["update_plan_api_v1_admin_plans__plan_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/plans/{plan_id}/make-default": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Make Default Plan
+         * @description The plan every NEW workspace starts on. Existing workspaces keep
+         *     their plan.
+         */
+        post: operations["make_default_plan_api_v1_admin_plans__plan_id__make_default_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plans/{plan_id}/features/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Plan Feature
+         * @description What this plan includes for one feature: on or off, and for a limit
+         *     feature the number (null = unlimited). Applies at once to every
+         *     workspace on the plan that has no override of its own.
+         */
+        put: operations["set_plan_feature_api_v1_admin_plans__plan_id__features__key__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/features": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Features
+         * @description Every feature that exists, with its switch. The list itself comes
+         *     from code (app/core/features.py); only the switch is changed here.
+         */
+        get: operations["list_features_api_v1_admin_features_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/features/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Set Global Switch
+         * @description Turn a feature off for EVERYONE, whatever their plan or override —
+         *     or back on. For an outage, or a feature that is not released yet.
+         */
+        patch: operations["set_global_switch_api_v1_admin_features__key__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Settings */
+        get: operations["list_settings_api_v1_admin_settings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/settings/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Setting */
+        patch: operations["update_setting_api_v1_admin_settings__key__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Templates */
+        get: operations["list_templates_api_v1_admin_templates_get"];
+        put?: never;
+        /** Create Template */
+        post: operations["create_template_api_v1_admin_templates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/templates/{template_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Template
+         * @description Edit a template, or switch it off (`is_active: false`) so customers
+         *     no longer see it. Posts already written from it are not affected.
+         */
+        patch: operations["update_template_api_v1_admin_templates__template_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Posts */
+        get: operations["list_posts_api_v1_admin_workspaces__workspace_id__posts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/posts/{post_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Post
+         * @description One post with its media, approval history and publish jobs.
+         */
+        get: operations["get_post_api_v1_admin_posts__post_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/brands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Brands */
+        get: operations["list_brands_api_v1_admin_workspaces__workspace_id__brands_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/social-accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Social Accounts
+         * @description Which accounts are connected and whether they are healthy. Tokens are
+         *     not included: this API's database role cannot read them.
+         */
+        get: operations["list_social_accounts_api_v1_admin_workspaces__workspace_id__social_accounts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Usage Report
+         * @description Usage per workspace, for billing and for catching a workspace that
+         *     uses more than its plan allows.
+         */
+        get: operations["usage_report_api_v1_admin_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/workspaces/{workspace_id}/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Workspace Usage */
+        get: operations["workspace_usage_api_v1_admin_workspaces__workspace_id__usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/audit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Audit */
+        get: operations["list_audit_api_v1_admin_audit_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -811,6 +1773,653 @@ export interface components {
             /** @default member */
             role: components["schemas"]["WorkspaceRole"];
         };
+        /** AdminFeature */
+        AdminFeature: {
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Value Type */
+            value_type: string;
+            /** Category */
+            category: string;
+            /** Global Enabled */
+            global_enabled: boolean;
+            /** Is Active */
+            is_active: boolean;
+        };
+        /** AdminMember */
+        AdminMember: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Email */
+            email: string;
+            /** Full Name */
+            full_name: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Role */
+            role: string;
+            /**
+             * Joined At
+             * Format: date-time
+             */
+            joined_at: string;
+        };
+        /** AdminMemberAdd */
+        AdminMemberAdd: {
+            /** Reason */
+            reason: string;
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** @default member */
+            role: components["schemas"]["WorkspaceRole"];
+        };
+        /** AdminMemberRole */
+        AdminMemberRole: {
+            /** Reason */
+            reason: string;
+            role: components["schemas"]["WorkspaceRole"];
+        };
+        /** AdminMembership */
+        AdminMembership: {
+            /**
+             * Workspace Id
+             * Format: uuid
+             */
+            workspace_id: string;
+            /** Workspace Name */
+            workspace_name: string;
+            /** Workspace Status */
+            workspace_status: string;
+            /** Role */
+            role: string;
+        };
+        /** AdminOverview */
+        AdminOverview: {
+            /** Workspaces Total */
+            workspaces_total: number;
+            /** Workspaces Suspended */
+            workspaces_suspended: number;
+            /** Workspaces By Plan */
+            workspaces_by_plan: {
+                [key: string]: number;
+            };
+            /** Users Total */
+            users_total: number;
+            /** Users Active */
+            users_active: number;
+            /** Users Signed In Last 30 Days */
+            users_signed_in_last_30_days: number;
+            /** Posts Total */
+            posts_total: number;
+            /** Posts Created Last 30 Days */
+            posts_created_last_30_days: number;
+            /** Posts Published Last 30 Days */
+            posts_published_last_30_days: number;
+            /** Jobs Failed */
+            jobs_failed: number;
+            /** Jobs Needing Review */
+            jobs_needing_review: number;
+            /** Open Alerts */
+            open_alerts: number;
+            client_approvals?: components["schemas"]["ApprovalStats"] | null;
+            /** Database Role */
+            database_role: string;
+        };
+        /** AdminPlan */
+        AdminPlan: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+            /** Is Default */
+            is_default: boolean;
+            /** Is Active */
+            is_active: boolean;
+            /** Sort Order */
+            sort_order: number;
+            /** Workspace Count */
+            workspace_count: number;
+            /** Features */
+            features: {
+                [key: string]: components["schemas"]["PlanFeatureValue"];
+            };
+        };
+        /** AdminPlanCreate */
+        AdminPlanCreate: {
+            /** Reason */
+            reason: string;
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+            /**
+             * Sort Order
+             * @default 0
+             */
+            sort_order: number;
+            /** Copy From Key */
+            copy_from_key?: string | null;
+        };
+        /** AdminPlanUpdate */
+        AdminPlanUpdate: {
+            /** Reason */
+            reason: string;
+            /** Name */
+            name?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Sort Order */
+            sort_order?: number | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** AdminPostDetail */
+        AdminPostDetail: {
+            /**
+             * Workspace Id
+             * Format: uuid
+             */
+            workspace_id: string;
+            /** Brand Name */
+            brand_name: string;
+            /** Author Email */
+            author_email: string;
+            post: components["schemas"]["PostResponse"];
+            /** History */
+            history: components["schemas"]["ApprovalLogResponse"][];
+            /** Jobs */
+            jobs: components["schemas"]["JobResponse"][];
+        };
+        /** AdminPostList */
+        AdminPostList: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+            /** Items */
+            items: components["schemas"]["AdminPostRow"][];
+        };
+        /** AdminPostRow */
+        AdminPostRow: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Brand Id
+             * Format: uuid
+             */
+            brand_id: string;
+            /** Brand Name */
+            brand_name: string;
+            /** Author Email */
+            author_email: string;
+            /** Title */
+            title?: string | null;
+            /** Caption */
+            caption: string;
+            /** Status */
+            status: string;
+            /** Media Count */
+            media_count: number;
+            /** Scheduled At */
+            scheduled_at?: string | null;
+            /** Published At */
+            published_at?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** AdminSession */
+        AdminSession: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Ip Address */
+            ip_address?: string | null;
+            /** User Agent */
+            user_agent?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+        };
+        /** AdminSetting */
+        AdminSetting: {
+            /** Key */
+            key: string;
+            /** Value */
+            value: unknown;
+            /** Value Type */
+            value_type: string;
+            /** Description */
+            description: string;
+            /** Default */
+            default: unknown;
+            /** Minimum */
+            minimum?: number | null;
+            /** Maximum */
+            maximum?: number | null;
+            /** Updated At */
+            updated_at?: string | null;
+        };
+        /**
+         * AdminSocialAccount
+         * @description No token fields: the admin database role cannot read them.
+         */
+        AdminSocialAccount: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Platform */
+            platform: string;
+            /** Account Name */
+            account_name: string;
+            /** Account Type */
+            account_type?: string | null;
+            /** Platform Account Id */
+            platform_account_id: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Needs Reauth */
+            needs_reauth: boolean;
+            /** Token Expires At */
+            token_expires_at?: string | null;
+            /**
+             * Connected At
+             * Format: date-time
+             */
+            connected_at: string;
+        };
+        /** AdminTemplateCreate */
+        AdminTemplateCreate: {
+            /** Reason */
+            reason: string;
+            /** Industry */
+            industry: string;
+            /** @default promotional */
+            category: components["schemas"]["TemplateCategory"];
+            /** Title */
+            title: string;
+            /** Template Text */
+            template_text: string;
+            /** Suggested Hashtags */
+            suggested_hashtags?: string[];
+            /** Suggested Cta */
+            suggested_cta?: string | null;
+        };
+        /** AdminTemplateUpdate */
+        AdminTemplateUpdate: {
+            /** Reason */
+            reason: string;
+            /** Industry */
+            industry?: string | null;
+            category?: components["schemas"]["TemplateCategory"] | null;
+            /** Title */
+            title?: string | null;
+            /** Template Text */
+            template_text?: string | null;
+            /** Suggested Hashtags */
+            suggested_hashtags?: string[] | null;
+            /** Suggested Cta */
+            suggested_cta?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** AdminUser */
+        AdminUser: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email: string;
+            /** Full Name */
+            full_name: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Platform Role */
+            platform_role?: string | null;
+            /** Last Login At */
+            last_login_at?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Workspace Count
+             * @default 0
+             */
+            workspace_count: number;
+        };
+        /** AdminUserCreate */
+        AdminUserCreate: {
+            /** Reason */
+            reason: string;
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Full Name */
+            full_name: string;
+            /** Workspace Id */
+            workspace_id?: string | null;
+            /** @default member */
+            role: components["schemas"]["WorkspaceRole"];
+            /** New Workspace Name */
+            new_workspace_name?: string | null;
+            /** Plan Key */
+            plan_key?: string | null;
+        };
+        /** AdminUserDetail */
+        AdminUserDetail: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email: string;
+            /** Full Name */
+            full_name: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Platform Role */
+            platform_role?: string | null;
+            /** Last Login At */
+            last_login_at?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Workspace Count
+             * @default 0
+             */
+            workspace_count: number;
+            /** Memberships */
+            memberships: components["schemas"]["AdminMembership"][];
+            /** Sessions */
+            sessions: components["schemas"]["AdminSession"][];
+            pending_setup_link?: components["schemas"]["PendingSetupLink"] | null;
+        };
+        /** AdminUserList */
+        AdminUserList: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+            /** Items */
+            items: components["schemas"]["AdminUser"][];
+        };
+        /** AdminUserUpdate */
+        AdminUserUpdate: {
+            /** Reason */
+            reason: string;
+            /** Full Name */
+            full_name?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** AdminWorkspace */
+        AdminWorkspace: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Slug */
+            slug: string;
+            /** Status */
+            status: string;
+            /** Plan Key */
+            plan_key: string;
+            /** Plan Name */
+            plan_name: string;
+            /**
+             * Owner Id
+             * Format: uuid
+             */
+            owner_id: string;
+            /** Owner Email */
+            owner_email: string;
+            /** Owner Name */
+            owner_name: string;
+            /** Member Count */
+            member_count: number;
+            /** Allow Self Approval */
+            allow_self_approval: boolean;
+            /** Suspended At */
+            suspended_at?: string | null;
+            /** Suspended Reason */
+            suspended_reason?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** AdminWorkspaceCreate */
+        AdminWorkspaceCreate: {
+            /** Reason */
+            reason: string;
+            /** Name */
+            name: string;
+            /**
+             * Owner Email
+             * Format: email
+             */
+            owner_email: string;
+            /** Plan Key */
+            plan_key?: string | null;
+        };
+        /** AdminWorkspaceDetail */
+        AdminWorkspaceDetail: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Slug */
+            slug: string;
+            /** Status */
+            status: string;
+            /** Plan Key */
+            plan_key: string;
+            /** Plan Name */
+            plan_name: string;
+            /**
+             * Owner Id
+             * Format: uuid
+             */
+            owner_id: string;
+            /** Owner Email */
+            owner_email: string;
+            /** Owner Name */
+            owner_name: string;
+            /** Member Count */
+            member_count: number;
+            /** Allow Self Approval */
+            allow_self_approval: boolean;
+            /** Suspended At */
+            suspended_at?: string | null;
+            /** Suspended Reason */
+            suspended_reason?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Brand Count */
+            brand_count: number;
+            /** Post Count */
+            post_count: number;
+            /** Social Account Count */
+            social_account_count: number;
+            approvals?: components["schemas"]["ApprovalStats"] | null;
+        };
+        /** AdminWorkspaceFeature */
+        AdminWorkspaceFeature: {
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+            /** Value Type */
+            value_type: string;
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+            /** Source */
+            source: string;
+            /** Plan Enabled */
+            plan_enabled: boolean;
+            /** Plan Limit */
+            plan_limit?: number | null;
+            override?: components["schemas"]["FeatureOverride"] | null;
+        };
+        /** AdminWorkspaceFeatures */
+        AdminWorkspaceFeatures: {
+            /**
+             * Workspace Id
+             * Format: uuid
+             */
+            workspace_id: string;
+            /** Plan Key */
+            plan_key: string;
+            /** Features */
+            features: components["schemas"]["AdminWorkspaceFeature"][];
+        };
+        /** AdminWorkspaceList */
+        AdminWorkspaceList: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+            /** Items */
+            items: components["schemas"]["AdminWorkspace"][];
+        };
+        /** AdminWorkspaceUpdate */
+        AdminWorkspaceUpdate: {
+            /** Reason */
+            reason: string;
+            /** Name */
+            name?: string | null;
+            /** Plan Key */
+            plan_key?: string | null;
+        };
+        /** ApprovalLinkCreate */
+        ApprovalLinkCreate: {
+            /** Contact Id */
+            contact_id?: string | null;
+            /** Recipient Name */
+            recipient_name?: string | null;
+            /** Recipient Contact */
+            recipient_contact?: string | null;
+            /** Expires In Minutes */
+            expires_in_minutes?: number | null;
+        };
+        /** ApprovalLinkResponse */
+        ApprovalLinkResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Post Id
+             * Format: uuid
+             */
+            post_id: string;
+            /** Contact Id */
+            contact_id?: string | null;
+            /** Recipient Name */
+            recipient_name: string;
+            /** Status */
+            status: string;
+            /** Version At Share */
+            version_at_share: number;
+            /** Expiry Minutes */
+            expiry_minutes: number;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** View Count */
+            view_count: number;
+            /** First Viewed At */
+            first_viewed_at?: string | null;
+            /** Last Viewed At */
+            last_viewed_at?: string | null;
+            /** Decided At */
+            decided_at?: string | null;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Resent From Id */
+            resent_from_id?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Can Resend
+             * @default false
+             */
+            can_resend: boolean;
+        };
         /** ApprovalLogResponse */
         ApprovalLogResponse: {
             /**
@@ -823,22 +2432,129 @@ export interface components {
              * Format: uuid
              */
             post_id: string;
-            /**
-             * User Id
-             * Format: uuid
-             */
-            user_id: string;
+            /** User Id */
+            user_id?: string | null;
+            /** Approval Link Id */
+            approval_link_id?: string | null;
+            /** Actor Name */
+            actor_name?: string | null;
             /** Action */
             action: string;
             /** Content Hash At Action */
             content_hash_at_action?: string | null;
             /** Rejection Reason */
             rejection_reason?: string | null;
+            /** Assigned User Id */
+            assigned_user_id?: string | null;
+            /** Assigned Contact Id */
+            assigned_contact_id?: string | null;
+            /** Assigned Name */
+            assigned_name?: string | null;
+            /** Acted By Assignee */
+            acted_by_assignee?: boolean | null;
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
+        };
+        /**
+         * ApprovalStats
+         * @description Client-approval funnel over the last `window_days` (counts only).
+         */
+        ApprovalStats: {
+            /** Window Days */
+            window_days: number;
+            /** Links Created */
+            links_created: number;
+            /** Links Opened */
+            links_opened: number;
+            /** Client Approved */
+            client_approved: number;
+            /** Client Changes Requested */
+            client_changes_requested: number;
+            /** Links Expired Unanswered */
+            links_expired_unanswered: number;
+            /** Median Client Response Minutes */
+            median_client_response_minutes?: number | null;
+            /** Approvals By Client */
+            approvals_by_client: number;
+            /** Approvals By Manager */
+            approvals_by_manager: number;
+            /** On Behalf Percent */
+            on_behalf_percent?: number | null;
+            /** Saved Contacts */
+            saved_contacts: number;
+            /** Workspaces Using Links */
+            workspaces_using_links?: number | null;
+        };
+        /** ApproversResponse */
+        ApproversResponse: {
+            /** Managers */
+            managers: components["schemas"]["ManagerOption"][];
+            /** Contacts */
+            contacts: components["schemas"]["ContactOption"][];
+            suggested?: components["schemas"]["SuggestedReviewer"] | null;
+            /** Suggestion Note */
+            suggestion_note?: string | null;
+            /** Can Add Contacts */
+            can_add_contacts: boolean;
+            /** Client Links Enabled */
+            client_links_enabled: boolean;
+        };
+        /**
+         * AuditAction
+         * @enum {string}
+         */
+        AuditAction: "CREATE" | "UPDATE" | "DELETE" | "PUBLISH" | "SUBMIT" | "APPROVE" | "REJECT" | "SCHEDULE" | "CONNECT" | "DISCONNECT" | "INVITE" | "ROLE_CHANGE" | "VIEW" | "SUSPEND" | "REACTIVATE" | "PLAN_CHANGE" | "FEATURE_CHANGE" | "SETTING_CHANGE" | "OWNERSHIP_TRANSFER" | "SETUP_LINK" | "FORCE_LOGOUT" | "ALERT_UPDATE" | "SHARE_LINK" | "REVOKE_LINK" | "ASSIGN" | "CONTACT_CHANGE";
+        /** AuditList */
+        AuditList: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+            /** Items */
+            items: components["schemas"]["AuditRow"][];
+        };
+        /** AuditRow */
+        AuditRow: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Action */
+            action: string;
+            /** Entity Type */
+            entity_type: string;
+            /**
+             * Entity Id
+             * Format: uuid
+             */
+            entity_id: string;
+            /** Workspace Id */
+            workspace_id?: string | null;
+            /** User Id */
+            user_id?: string | null;
+            /** User Email */
+            user_email: string;
+            /** User Name */
+            user_name: string;
+            /** Actor Platform Role */
+            actor_platform_role?: string | null;
+            /** Reason */
+            reason?: string | null;
+            /** Changes */
+            changes: Record<string, never>;
+            /** Ip Address */
+            ip_address?: string | null;
         };
         /** AuthResponse */
         AuthResponse: {
@@ -883,6 +2599,61 @@ export interface components {
             post_id: string;
             /** Alt Text */
             alt_text?: string | null;
+        };
+        /** BrandContactCreate */
+        BrandContactCreate: {
+            /** Name */
+            name: string;
+            /** Role Label */
+            role_label?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Email */
+            email?: string | null;
+        };
+        /** BrandContactResponse */
+        BrandContactResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Brand Id
+             * Format: uuid
+             */
+            brand_id: string;
+            /** Name */
+            name: string;
+            /** Role Label */
+            role_label?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Email */
+            email?: string | null;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Forgotten
+             * @default false
+             */
+            forgotten: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** BrandContactUpdate */
+        BrandContactUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Role Label */
+            role_label?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Email */
+            email?: string | null;
         };
         /** BrandCreate */
         BrandCreate: {
@@ -1045,6 +2816,77 @@ export interface components {
             /** Authorization Url */
             authorization_url: string;
         };
+        /** ContactOption */
+        ContactOption: {
+            /**
+             * Contact Id
+             * Format: uuid
+             */
+            contact_id: string;
+            /** Name */
+            name: string;
+            /** Role Label */
+            role_label?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Email */
+            email?: string | null;
+        };
+        /** FeatureOverride */
+        FeatureOverride: {
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+            /** Expires At */
+            expires_at?: string | null;
+            /** Expired */
+            expired: boolean;
+            /** Reason */
+            reason: string;
+            /**
+             * Set By User Id
+             * Format: uuid
+             */
+            set_by_user_id: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** FeatureOverrideIn */
+        FeatureOverrideIn: {
+            /** Reason */
+            reason: string;
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+            /** Expires At */
+            expires_at?: string | null;
+        };
+        /** FeatureValueIn */
+        FeatureValueIn: {
+            /** Reason */
+            reason: string;
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+        };
+        /** ForceLogoutResponse */
+        ForceLogoutResponse: {
+            /** Sessions Ended */
+            sessions_ended: number;
+        };
+        /** GlobalSwitchIn */
+        GlobalSwitchIn: {
+            /** Reason */
+            reason: string;
+            /** Global Enabled */
+            global_enabled: boolean;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1073,6 +2915,21 @@ export interface components {
             /** Result */
             result?: Record<string, never> | null;
         };
+        /** LinkOptionsResponse */
+        LinkOptionsResponse: {
+            /** Presets */
+            presets: number[];
+            /** Default Minutes */
+            default_minutes: number;
+            /** Min Minutes */
+            min_minutes: number;
+            /** Max Minutes */
+            max_minutes: number;
+            /** Max For You */
+            max_for_you: number;
+            /** Workspace Default Minutes */
+            workspace_default_minutes?: number | null;
+        };
         /** LoginRequest */
         LoginRequest: {
             /**
@@ -1082,6 +2939,18 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /** ManagerOption */
+        ManagerOption: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Name */
+            name: string;
+            /** Role */
+            role: string;
         };
         /** MediaReorderRequest */
         MediaReorderRequest: {
@@ -1150,6 +3019,99 @@ export interface components {
              * @default page
              */
             account_type: string | null;
+        };
+        /** NewLinkResponse */
+        NewLinkResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Url */
+            url: string;
+            /** Recipient Name */
+            recipient_name: string;
+            /** Recipient Phone */
+            recipient_phone?: string | null;
+            /** Recipient Email */
+            recipient_email?: string | null;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Expiry Minutes */
+            expiry_minutes: number;
+        };
+        /** NotificationListResponse */
+        NotificationListResponse: {
+            /** Items */
+            items: components["schemas"]["NotificationResponse"][];
+            /** Unread */
+            unread: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+        };
+        /** NotificationResponse */
+        NotificationResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Type */
+            type: string;
+            /** Post Id */
+            post_id?: string | null;
+            /** Actor Name */
+            actor_name?: string | null;
+            /** Message */
+            message: string;
+            /** Read At */
+            read_at?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** PendingSetupLink */
+        PendingSetupLink: {
+            /** Purpose */
+            purpose: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** PlanFeatureValue */
+        PlanFeatureValue: {
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+        };
+        /**
+         * PlatformRole
+         * @description Platform staff (the product owner's side). NULL on users = a customer.
+         *     Never a workspace role: staff are not members of customer workspaces.
+         * @constant
+         * @enum {string}
+         */
+        PlatformRole: "super_admin";
+        /** PlatformRoleIn */
+        PlatformRoleIn: {
+            /** Reason */
+            reason: string;
+            platform_role?: components["schemas"]["PlatformRole"] | null;
         };
         /** PostCreate */
         PostCreate: {
@@ -1255,6 +3217,12 @@ export interface components {
              * @default []
              */
             media: components["schemas"]["PostMediaResponse"][];
+            /** Assigned Approver Id */
+            assigned_approver_id?: string | null;
+            /** Assigned Contact Id */
+            assigned_contact_id?: string | null;
+            /** Assigned Name */
+            assigned_name?: string | null;
         };
         /**
          * PostStatus
@@ -1274,10 +3242,106 @@ export interface components {
             /** Platform Targets */
             platform_targets?: Record<string, never> | null;
         };
+        /** PublicDecideRequest */
+        PublicDecideRequest: {
+            /** Token */
+            token: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approve" | "request_changes";
+            /** Name */
+            name: string;
+            /** Note */
+            note?: string | null;
+        };
+        /** PublicMedia */
+        PublicMedia: {
+            /** Url */
+            url: string;
+            /** Media Type */
+            media_type: string;
+            /** Alt Text */
+            alt_text?: string | null;
+        };
+        /** PublicPlatformPreview */
+        PublicPlatformPreview: {
+            /** Platform */
+            platform: string;
+            /** Text */
+            text: string;
+            /** Character Count */
+            character_count: number;
+        };
+        /** PublicReceipt */
+        PublicReceipt: {
+            /** Decision */
+            decision: string;
+            /** Name */
+            name: string;
+            /**
+             * Decided At
+             * Format: date-time
+             */
+            decided_at: string;
+            /** Version */
+            version: number;
+            /** Fingerprint */
+            fingerprint: string;
+        };
+        /** PublicTokenRequest */
+        PublicTokenRequest: {
+            /** Token */
+            token: string;
+        };
+        /** PublicViewResponse */
+        PublicViewResponse: {
+            /** State */
+            state: string;
+            /** Message */
+            message?: string | null;
+            /** Agency Name */
+            agency_name: string;
+            /** Brand Name */
+            brand_name: string;
+            /** Brand Logo Url */
+            brand_logo_url?: string | null;
+            /** Recipient Name */
+            recipient_name: string;
+            /** Version */
+            version: number;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /**
+             * Server Now
+             * Format: date-time
+             */
+            server_now: string;
+            /**
+             * Platforms
+             * @default []
+             */
+            platforms: components["schemas"]["PublicPlatformPreview"][];
+            /**
+             * Media
+             * @default []
+             */
+            media: components["schemas"]["PublicMedia"][];
+            receipt?: components["schemas"]["PublicReceipt"] | null;
+        };
         /** PublishNowRequest */
         PublishNowRequest: {
             /** Social Account Ids */
             social_account_ids: string[];
+        };
+        /** Reasoned */
+        Reasoned: {
+            /** Reason */
+            reason: string;
         };
         /** RegisterRequest */
         RegisterRequest: {
@@ -1313,6 +3377,18 @@ export interface components {
              */
             confirm_not_posted: boolean;
         };
+        /**
+         * ReviewerChoice
+         * @description Who to ask: a manager, a saved client contact, or neither (any manager).
+         */
+        ReviewerChoice: {
+            /** Assign To User Id */
+            assign_to_user_id?: string | null;
+            /** Assign To Contact Id */
+            assign_to_contact_id?: string | null;
+            /** Expires In Minutes */
+            expires_in_minutes?: number | null;
+        };
         /** ScheduleRequest */
         ScheduleRequest: {
             /**
@@ -1339,6 +3415,43 @@ export interface components {
             scheduled_at?: string | null;
             /** Jobs */
             jobs: components["schemas"]["JobResponse"][];
+        };
+        /** SetPasswordRequest */
+        SetPasswordRequest: {
+            /** Token */
+            token: string;
+            /** Password */
+            password: string;
+        };
+        /** SettingIn */
+        SettingIn: {
+            /** Reason */
+            reason: string;
+            /** Value */
+            value: unknown;
+        };
+        /**
+         * SetupLinkResponse
+         * @description `setup_link` is shown ONCE. Only its hash is stored, so it cannot be
+         *     looked up again — issue a new link if it is lost.
+         */
+        SetupLinkResponse: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Email */
+            email: string;
+            /** Setup Link */
+            setup_link: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Workspace Id */
+            workspace_id?: string | null;
         };
         /** SocialAccountResponse */
         SocialAccountResponse: {
@@ -1377,6 +3490,87 @@ export interface components {
          * @enum {string}
          */
         SocialPlatform: "facebook" | "instagram" | "linkedin";
+        /** SubmitResponse */
+        SubmitResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Brand Id
+             * Format: uuid
+             */
+            brand_id: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Title */
+            title?: string | null;
+            /** Caption */
+            caption: string;
+            /** Hashtags */
+            hashtags: string[];
+            /** Cta */
+            cta?: string | null;
+            /** Status */
+            status: string;
+            /** Content Hash */
+            content_hash?: string | null;
+            /** Version Number */
+            version_number: number;
+            /** Platform Targets */
+            platform_targets?: Record<string, never> | null;
+            /** Scheduled At */
+            scheduled_at?: string | null;
+            /** Timezone */
+            timezone?: string | null;
+            /** Published At */
+            published_at?: string | null;
+            /** Publish Result */
+            publish_result?: Record<string, never> | null;
+            /** Retry Count */
+            retry_count: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Media
+             * @default []
+             */
+            media: components["schemas"]["PostMediaResponse"][];
+            /** Assigned Approver Id */
+            assigned_approver_id?: string | null;
+            /** Assigned Contact Id */
+            assigned_contact_id?: string | null;
+            /** Assigned Name */
+            assigned_name?: string | null;
+            approval_link?: components["schemas"]["NewLinkResponse"] | null;
+        };
+        /** SuggestedReviewer */
+        SuggestedReviewer: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "manager" | "contact";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+        };
         /**
          * TemplateCategory
          * @enum {string}
@@ -1388,6 +3582,74 @@ export interface components {
          * @enum {string}
          */
         ThemePreference: "light" | "dark" | "system";
+        /** TransferOwnership */
+        TransferOwnership: {
+            /** Reason */
+            reason: string;
+            /**
+             * New Owner User Id
+             * Format: uuid
+             */
+            new_owner_user_id: string;
+        };
+        /** UnreadCountResponse */
+        UnreadCountResponse: {
+            /** Unread */
+            unread: number;
+        };
+        /** UsageReport */
+        UsageReport: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Limit */
+            limit: number;
+            /** Days */
+            days: number;
+            /** Items */
+            items: components["schemas"]["UsageRow"][];
+        };
+        /** UsageRow */
+        UsageRow: {
+            /**
+             * Workspace Id
+             * Format: uuid
+             */
+            workspace_id: string;
+            /** Workspace Name */
+            workspace_name: string;
+            /** Plan Key */
+            plan_key: string;
+            /** Status */
+            status: string;
+            /** Posts Created */
+            posts_created: number;
+            /** Posts Published */
+            posts_published: number;
+            /** Media Uploaded Mb */
+            media_uploaded_mb: number;
+            /** Brands */
+            brands: number;
+            /** Members */
+            members: number;
+            /** Social Accounts */
+            social_accounts: number;
+            /** Media Stored Mb */
+            media_stored_mb: number;
+            /** Posts Logged This Month */
+            posts_logged_this_month: number;
+            /** Posts In Table This Month */
+            posts_in_table_this_month: number;
+            /** Limits */
+            limits: {
+                [key: string]: number | null;
+            };
+            /** Over Limit */
+            over_limit: string[];
+            /** Usage Mismatch */
+            usage_mismatch: boolean;
+        };
         /** UsageSummaryResponse */
         UsageSummaryResponse: {
             /**
@@ -1429,6 +3691,7 @@ export interface components {
             /** Is Active */
             is_active: boolean;
             theme_preference: components["schemas"]["ThemePreference"];
+            platform_role?: components["schemas"]["PlatformRole"] | null;
             /**
              * Created At
              * Format: date-time
@@ -1466,6 +3729,35 @@ export interface components {
             /** Name */
             name: string;
         };
+        /** WorkspaceFeature */
+        WorkspaceFeature: {
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+            /** Value Type */
+            value_type: string;
+            /** Enabled */
+            enabled: boolean;
+            /** Limit */
+            limit?: number | null;
+        };
+        /** WorkspaceFeaturesResponse */
+        WorkspaceFeaturesResponse: {
+            /**
+             * Workspace Id
+             * Format: uuid
+             */
+            workspace_id: string;
+            /** Plan Key */
+            plan_key: string;
+            /** Plan Name */
+            plan_name: string;
+            /** Features */
+            features: components["schemas"]["WorkspaceFeature"][];
+        };
         /** WorkspaceResponse */
         WorkspaceResponse: {
             /**
@@ -1487,6 +3779,8 @@ export interface components {
              * @default true
              */
             allow_self_approval: boolean;
+            /** Approval Link Default Minutes */
+            approval_link_default_minutes?: number | null;
             /**
              * Created At
              * Format: date-time
@@ -1498,12 +3792,19 @@ export interface components {
          * @enum {string}
          */
         WorkspaceRole: "owner" | "admin" | "member";
+        /**
+         * WorkspaceStatus
+         * @enum {string}
+         */
+        WorkspaceStatus: "active" | "suspended";
         /** WorkspaceUpdate */
         WorkspaceUpdate: {
             /** Name */
             name?: string | null;
             /** Allow Self Approval */
             allow_self_approval?: boolean | null;
+            /** Approval Link Default Minutes */
+            approval_link_default_minutes?: number | null;
         };
     };
     responses: never;
@@ -1607,6 +3908,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_password_api_v1_auth_set_password_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1852,6 +4186,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UsageSummaryResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    workspace_features_api_v1_workspaces__workspace_id__features_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkspaceFeaturesResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2204,6 +4569,8 @@ export interface operations {
             query?: {
                 status?: components["schemas"]["PostStatus"] | null;
                 brand_id?: string | null;
+                /** @description `me`: posts waiting for MY approval */
+                assigned_to?: string | null;
                 page?: number;
                 limit?: number;
             };
@@ -2341,7 +4708,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ReviewerChoice"] | null;
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -2349,7 +4720,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostResponse"];
+                    "application/json": components["schemas"]["SubmitResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2693,6 +5064,565 @@ export interface operations {
             };
         };
     };
+    list_approvers_api_v1_posts__post_id__approvers_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApproversResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reassign_api_v1_posts__post_id__assignee_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewerChoice"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmitResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_contacts_api_v1_brands__brand_id__contacts_get: {
+        parameters: {
+            query?: {
+                include_removed?: boolean;
+            };
+            header?: never;
+            path: {
+                brand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandContactResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_contact_api_v1_brands__brand_id__contacts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                brand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BrandContactCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandContactResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_contact_api_v1_brands__brand_id__contacts__contact_id__delete: {
+        parameters: {
+            query?: {
+                /** @description Also erase phone and email (DPDP) */
+                forget?: boolean;
+            };
+            header?: never;
+            path: {
+                brand_id: string;
+                contact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_contact_api_v1_brands__brand_id__contacts__contact_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                brand_id: string;
+                contact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BrandContactUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandContactResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    link_options_api_v1_workspaces__workspace_id__approval_link_options_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LinkOptionsResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_links_api_v1_posts__post_id__approval_links_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApprovalLinkResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    share_with_client_api_v1_posts__post_id__approval_links_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApprovalLinkCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NewLinkResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revoke_link_api_v1_approval_links__link_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                link_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resend_link_api_v1_approval_links__link_id__resend_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                link_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NewLinkResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_notifications_api_v1_workspaces__workspace_id__notifications_get: {
+        parameters: {
+            query?: {
+                unread?: boolean;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    unread_count_api_v1_workspaces__workspace_id__notifications_unread_count_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnreadCountResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_read_api_v1_workspaces__workspace_id__notifications__notification_id__read_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+                notification_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnreadCountResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_all_read_api_v1_workspaces__workspace_id__notifications_read_all_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnreadCountResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    view_api_v1_public_approval_view_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublicTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicViewResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_api_v1_public_approval_decide_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublicDecideRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     calendar_api_v1_workspaces__workspace_id__calendar_get: {
         parameters: {
             query?: {
@@ -2992,6 +5922,7 @@ export interface operations {
                 industry?: string | null;
                 category?: components["schemas"]["TemplateCategory"] | null;
                 search?: string | null;
+                workspace_id?: string | null;
             };
             header?: never;
             path?: never;
@@ -3021,7 +5952,9 @@ export interface operations {
     };
     get_template_api_v1_templates__template_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                workspace_id?: string | null;
+            };
             header?: never;
             path: {
                 template_id: string;
@@ -3103,6 +6036,1355 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    overview_api_v1_admin_overview_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOverview"];
+                };
+            };
+        };
+    };
+    list_workspaces_api_v1_admin_workspaces_get: {
+        parameters: {
+            query?: {
+                search?: string | null;
+                plan?: string | null;
+                status?: components["schemas"]["WorkspaceStatus"] | null;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_workspace_api_v1_admin_workspaces_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminWorkspaceCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_workspace_api_v1_admin_workspaces__workspace_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_workspace_api_v1_admin_workspaces__workspace_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminWorkspaceUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    suspend_workspace_api_v1_admin_workspaces__workspace_id__suspend_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reasoned"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reactivate_workspace_api_v1_admin_workspaces__workspace_id__reactivate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reasoned"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transfer_ownership_api_v1_admin_workspaces__workspace_id__transfer_ownership_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferOwnership"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_members_api_v1_admin_workspaces__workspace_id__members_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminMember"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_member_api_v1_admin_workspaces__workspace_id__members_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminMemberAdd"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_member_api_v1_admin_workspaces__workspace_id__members__user_id__delete: {
+        parameters: {
+            query: {
+                reason: string;
+            };
+            header?: never;
+            path: {
+                workspace_id: string;
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_member_role_api_v1_admin_workspaces__workspace_id__members__user_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminMemberRole"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    workspace_features_api_v1_admin_workspaces__workspace_id__features_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceFeatures"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_feature_override_api_v1_admin_workspaces__workspace_id__features__key__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeatureOverrideIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceFeatures"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_feature_override_api_v1_admin_workspaces__workspace_id__features__key__delete: {
+        parameters: {
+            query: {
+                reason: string;
+            };
+            header?: never;
+            path: {
+                workspace_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminWorkspaceFeatures"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_users_api_v1_admin_users_get: {
+        parameters: {
+            query?: {
+                search?: string | null;
+                /** @description true = platform staff only, false = customers only */
+                staff?: boolean | null;
+                active?: boolean | null;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_user_api_v1_admin_users_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminUserCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SetupLinkResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_user_api_v1_admin_users__user_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_user_api_v1_admin_users__user_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminUserUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    new_setup_link_api_v1_admin_users__user_id__setup_link_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reasoned"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SetupLinkResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    force_logout_api_v1_admin_users__user_id__force_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reasoned"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForceLogoutResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_platform_role_api_v1_admin_users__user_id__platform_role_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlatformRoleIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_plans_api_v1_admin_plans_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlan"][];
+                };
+            };
+        };
+    };
+    create_plan_api_v1_admin_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminPlanCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_plan_api_v1_admin_plans__plan_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminPlanUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    make_default_plan_api_v1_admin_plans__plan_id__make_default_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reasoned"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_plan_feature_api_v1_admin_plans__plan_id__features__key__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeatureValueIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_features_api_v1_admin_features_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminFeature"][];
+                };
+            };
+        };
+    };
+    set_global_switch_api_v1_admin_features__key__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GlobalSwitchIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminFeature"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_settings_api_v1_admin_settings_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSetting"][];
+                };
+            };
+        };
+    };
+    update_setting_api_v1_admin_settings__key__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SettingIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSetting"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_templates_api_v1_admin_templates_get: {
+        parameters: {
+            query?: {
+                search?: string | null;
+                /** @description omit to see switched-off templates too */
+                active?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaptionTemplateResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_template_api_v1_admin_templates_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminTemplateCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaptionTemplateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_template_api_v1_admin_templates__template_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                template_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminTemplateUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaptionTemplateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_posts_api_v1_admin_workspaces__workspace_id__posts_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["PostStatus"] | null;
+                search?: string | null;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPostList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_post_api_v1_admin_posts__post_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPostDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_brands_api_v1_admin_workspaces__workspace_id__brands_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BrandResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_social_accounts_api_v1_admin_workspaces__workspace_id__social_accounts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSocialAccount"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    usage_report_api_v1_admin_usage_get: {
+        parameters: {
+            query?: {
+                days?: number;
+                plan?: string | null;
+                status?: components["schemas"]["WorkspaceStatus"] | null;
+                /** @description only workspaces over a limit or with a usage mismatch */
+                problems_only?: boolean;
+                /** @description csv = download every row */
+                format?: string | null;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsageReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    workspace_usage_api_v1_admin_workspaces__workspace_id__usage_get: {
+        parameters: {
+            query?: {
+                days?: number;
+            };
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsageRow"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_audit_api_v1_admin_audit_get: {
+        parameters: {
+            query?: {
+                workspace_id?: string | null;
+                /** @description who did it */
+                user_id?: string | null;
+                entity_id?: string | null;
+                entity_type?: string | null;
+                action?: components["schemas"]["AuditAction"] | null;
+                /** @description only actions taken by platform staff */
+                staff_only?: boolean;
+                since?: string | null;
+                until?: string | null;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditList"];
                 };
             };
             /** @description Validation Error */

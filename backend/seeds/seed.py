@@ -9,6 +9,9 @@ Demo workspace "Demo Agency":
   brands Aura Coffee (restaurant), FitZone Gym (fitness)
   social two MOCK accounts (facebook, linkedin) — publishing is simulated
   posts  one in every workflow state so each screen has something to show
+
+Staff console (/admin):
+  super admin  staff@example.com   / DemoPassword123!   (platform staff, in no workspace)
 """
 import asyncio
 import json
@@ -21,17 +24,19 @@ from app.config import settings
 from app.core.security import hash_password, post_content_hash
 from app.db.session import get_async_session_factory
 from app.models import (
-    ApprovalAction, ApprovalLog, Brand, CaptionTemplate, JobStatus, Post, PostStatus,
+    ApprovalAction, ApprovalLog, Brand, CaptionTemplate, JobStatus, PlatformRole, Post, PostStatus,
     PublishJob, SocialAccount, SocialPlatform, TemplateCategory, User, Workspace,
     WorkspaceMember, WorkspaceRole,
 )
 from app.services.encryption import encrypt_token
+from app.services.plans import get_default_plan_id
 
 SEED_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEMO_PASSWORD = "DemoPassword123!"
 OWNER_EMAIL = "demo@example.com"
 REVIEWER_EMAIL = "reviewer@example.com"
+STAFF_EMAIL = "staff@example.com"
 
 
 async def _user(db, email: str, name: str) -> User:
@@ -147,12 +152,17 @@ async def seed() -> None:
     async with get_async_session_factory()() as db:
         owner = await _user(db, OWNER_EMAIL, "Demo Owner")
         reviewer = await _user(db, REVIEWER_EMAIL, "Demo Reviewer")
+        staff = await _user(db, STAFF_EMAIL, "Demo Staff")
+        if staff.platform_role is None:
+            staff.platform_role = PlatformRole.SUPER_ADMIN
+            print(f"  + super admin {STAFF_EMAIL}: sign in and open /admin")
 
         workspace = await db.scalar(select(Workspace).where(Workspace.slug == "demo-agency"))
         if not workspace:
             # Two members -> author != approver, as add_member would set it.
             workspace = Workspace(name="Demo Agency", slug="demo-agency", owner_id=owner.id,
-                                  allow_self_approval=False)
+                                  allow_self_approval=False,
+                                  plan_id=await get_default_plan_id(db))
             db.add(workspace)
             await db.flush()
             print("  + workspace 'Demo Agency'")

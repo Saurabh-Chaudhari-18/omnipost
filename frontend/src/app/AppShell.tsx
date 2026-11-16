@@ -11,12 +11,13 @@ import {
   Moon,
   MoreHorizontal,
   Settings2,
+  ShieldCheck,
   SquarePen,
   Sun,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet, useMatch } from "react-router";
 
 import {
   DropdownMenu,
@@ -34,6 +35,8 @@ import { brandStyle, initials } from "@/lib/brandColor";
 import { useTheme, type Theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { ALL_BRANDS, useWorkspace } from "@/lib/workspace";
+
+import { NotificationBell } from "./NotificationBell";
 
 type NavItem = { to: string; label: string; short?: string; icon: LucideIcon; end?: boolean };
 
@@ -66,23 +69,20 @@ function RailTip({ label, children }: { label: string; children: ReactNode }) {
 
 function RailLink({ item }: { item: NavItem }) {
   const Icon = item.icon;
+  // Work out "active" here rather than via NavLink's function className: the tooltip's
+  // Slot merges className as plain strings and would stringify the function.
+  const isActive = useMatch({ path: item.to, end: item.end ?? false }) !== null;
   return (
     <RailTip label={item.label}>
-      <NavLink
+      <Link
         to={item.to}
-        end={item.end}
         aria-label={item.label}
-        className={({ isActive }) =>
-          cn(railButton, isActive && "bg-surface-active text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] hover:bg-surface-active")
-        }
+        aria-current={isActive ? "page" : undefined}
+        className={cn(railButton, isActive && "bg-surface-active text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] hover:bg-surface-active")}
       >
-        {({ isActive }) => (
-          <>
-            {isActive && <span aria-hidden="true" className="absolute top-3 bottom-3 -left-3 w-[3px] rounded-r bg-primary" />}
-            <Icon className="size-5" strokeWidth={1.5} aria-hidden="true" />
-          </>
-        )}
-      </NavLink>
+        {isActive && <span aria-hidden="true" className="absolute top-3 bottom-3 -left-3 w-[3px] rounded-r bg-primary" />}
+        <Icon className="size-5" strokeWidth={1.5} aria-hidden="true" />
+      </Link>
     </RailTip>
   );
 }
@@ -118,6 +118,13 @@ function AccountMenu({ side }: { side: "right" | "bottom" }) {
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
         <DropdownMenuSeparator />
+        {user?.platform_role === "super_admin" && (
+          <DropdownMenuItem asChild>
+            <Link to="/admin">
+              <ShieldCheck aria-hidden="true" /> Staff console
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onSelect={() => void logout()}>
           <LogOut aria-hidden="true" /> Sign out
         </DropdownMenuItem>
@@ -212,7 +219,8 @@ export function AppShell() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-svh pb-20 md:pb-0 md:pl-16">
+      {/* overflow-x-clip (not hidden) so decorative bleeds never cause sideways scroll and sticky headers still work */}
+      <div className="min-h-svh overflow-x-clip pb-[calc(4rem+env(safe-area-inset-bottom)+1rem)] md:pb-0 md:pl-16">
         {/* ── Desktop: the icon rail ─────────────────────────────── */}
         <aside aria-label="Main" className="fixed inset-y-0 left-0 z-30 hidden w-16 flex-col items-center justify-between border-r bg-surface-subtle py-4 md:flex">
           <div className="flex w-full flex-col items-center gap-4">
@@ -226,6 +234,7 @@ export function AppShell() {
             </nav>
           </div>
           <div className="flex flex-col items-center gap-3">
+            <NotificationBell side="right" />
             <RailLink item={SETTINGS} />
             <AccountMenu side="right" />
           </div>
@@ -236,13 +245,14 @@ export function AppShell() {
           <WorkspaceMark side="bottom" />
           <span className="min-w-0 flex-1 truncate text-sm font-medium">{workspace?.name ?? "…"}</span>
           <BrandMenu side="bottom" compact />
+          <NotificationBell side="bottom" />
           <AccountMenu side="bottom" />
         </header>
 
         <Outlet />
 
         {/* ── Phone: bottom bar, five items; the rest under More ──── */}
-        <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 grid h-16 grid-cols-5 border-t bg-surface-subtle pb-[env(safe-area-inset-bottom)] md:hidden">
+        <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 grid h-[calc(4rem+env(safe-area-inset-bottom))] grid-cols-5 border-t bg-surface-subtle pb-[env(safe-area-inset-bottom)] md:hidden">
           {PHONE_BAR.map((item) => {
             const Icon = item.icon;
             return (

@@ -4,7 +4,7 @@ from uuid import UUID
 import uuid as uuid_mod
 
 from fastapi import APIRouter, Depends, File, Request, UploadFile, status
-from sqlalchemy import select
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import (
@@ -12,9 +12,10 @@ from app.core.dependencies import (
 )
 from app.core.rate_limit import workspace_rate_limit
 from app.db.session import get_db
-from app.models import AuditAction, Brand, User, WorkspaceRole
+from app.models import ApprovalLink, AuditAction, Brand, Post, User, WorkspaceRole
 from app.schemas.schemas import BrandCreate, BrandLogoResponse, BrandResponse, BrandUpdate, MessageResponse
 from app.services.audit import record_audit_event
+from app.services.features import enforce_limit
 from app.services.storage import get_storage
 
 router = APIRouter(tags=["Brands"], dependencies=[Depends(workspace_rate_limit)])
@@ -38,6 +39,12 @@ async def create_brand(workspace_id: UUID, req: BrandCreate, request: Request,
                        db: AsyncSession = Depends(get_db),
                        user: User = Depends(get_current_user)):
     await get_workspace_member(workspace_id, db, user)  # any member can create brands
+
+    async def active_brands() -> int:
+        return await db.scalar(
+            select(func.count(Brand.id)).where(Brand.workspace_id == workspace_id, Brand.is_active == True)  # noqa: E712
+        )
+    await enforce_limit(db, workspace_id, "max_brands", active_brands)
 
     brand = Brand(
         workspace_id=workspace_id,
@@ -132,10 +139,19 @@ async def deactivate_brand(brand_id: UUID, request: Request,
     require_role(member, WorkspaceRole.OWNER, WorkspaceRole.ADMIN)
 
     brand.is_active = False
+    # D13: a deactivated brand's client links stop working at once.
+    revoked = (await db.execute(
+        update(ApprovalLink)
+        .where(ApprovalLink.post_id.in_(select(Post.id).where(Post.brand_id == brand.id)),
+               ApprovalLink.decided_at.is_(None), ApprovalLink.revoked_at.is_(None))
+        .values(revoked_at=func.now(), revoke_reason="brand_deactivated")
+        .execution_options(synchronize_session=False)
+    )).rowcount
     record_audit_event(
         db, action=AuditAction.DELETE, entity_type="Brand", entity_id=brand.id,
         workspace_id=brand.workspace_id, user_id=user.id, user_email=user.email,
-        user_name=user.full_name, changes={"before": {"is_active": True}},
+        user_name=user.full_name, changes={"before": {"is_active": True},
+                                           "after": {"client_links_revoked": revoked}},
         ip_address=client_ip(request),
     )
     await db.commit()
