@@ -6,6 +6,7 @@ B2B social media marketing platform — one workspace where a business or agency
 |---|---|
 | [`backend/`](backend/) | FastAPI · PostgreSQL 16 · Celery/Redis · S3-compatible storage — API, database migrations, background workers, tests |
 | [`frontend/`](frontend/) | React 19 · TypeScript · Vite · Tailwind CSS 4 · shadcn/ui — the web app, in the product owner's design (dark by default) |
+| [`deploy/`](deploy/) | Production setup for one Linux server with Docker: HTTPS, restricted database logins, daily backups — see [deploy/README.md](deploy/README.md) |
 | [`docs/`](docs/) | Project documentation: approach, database, functionality, progress and roadmap, system design, **developer setup** |
 
 **New developer? Start here:** [docs/07_setup_guide.md](docs/07_setup_guide.md) — install, configure and run everything on your laptop, step by step.
